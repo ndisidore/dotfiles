@@ -97,7 +97,8 @@ jobs:
       - name: Verify templates render
         run: |
           # Test that all .tmpl files render without errors
-          find . -name "*.tmpl" -type f | while read -r f; do
+          # Skip .chezmoi.toml.tmpl (uses promptStringOnce which only works during init)
+          find . -name "*.tmpl" -type f ! -name ".chezmoi.toml.tmpl" | while read -r f; do
             echo "Testing template: $f"
             chezmoi execute-template < "$f" > /dev/null
           done

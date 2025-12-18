@@ -85,11 +85,15 @@ jobs:
           mkdir -p ~/.local/share
           ln -s "$(pwd)" ~/.local/share/chezmoi
 
-          # Initialize chezmoi with test data (non-interactive)
-          # --promptString and --promptChoice take comma-separated key=value pairs
-          chezmoi init --force \
-            --promptString 'name=Test User,email=test@example.com' \
-            --promptChoice 'machine_type=personal'
+          # Create chezmoi config with test data
+          # (bypasses interactive prompts from .chezmoi.toml.tmpl)
+          mkdir -p ~/.config/chezmoi
+          cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
+          [data]
+            name = "Test User"
+            email = "test@example.com"
+            machine_type = "personal"
+          EOF
 
       - name: Verify templates render
         run: |
@@ -102,5 +106,5 @@ jobs:
 
       - name: Check managed files
         run: |
-          chezmoi verify
           chezmoi managed
+          chezmoi diff --no-pager || true

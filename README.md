@@ -1,5 +1,19 @@
 # dotfiles
 
+<div align="center">
+
+[![CI](https://github.com/ndisidore/dotfiles/actions/workflows/ci.yaml/badge.svg)](https://github.com/ndisidore/dotfiles/actions/workflows/ci.yaml)
+[![Renovate](https://img.shields.io/badge/renovate-enabled-brightgreen?logo=renovatebot)](https://github.com/ndisidore/dotfiles/issues)
+
+[![twpayne/chezmoi](https://img.shields.io/github/v/tag/twpayne/chezmoi?color=4078c0&display_name=release&label=chezmoi&logo=git&logoColor=4078c0&sort=semver)](https://github.com/twpayne/chezmoi)
+[![jdx/mise](https://img.shields.io/github/v/tag/jdx/mise?color=00acc1&display_name=release&label=mise&logo=gnometerminal&logoColor=00acc1&sort=semver)](https://github.com/jdx/mise)
+[![fish-shell/fish-shell](https://img.shields.io/github/v/tag/fish-shell/fish-shell?color=4AAE46&display_name=release&label=fish&logo=gnubash&logoColor=4AAE46&sort=semver)](https://github.com/fish-shell/fish-shell)
+[![starship/starship](https://img.shields.io/github/v/tag/starship/starship?color=DD0B78&display_name=release&label=starship&logo=starship&logoColor=DD0B78&sort=semver)](https://github.com/starship/starship)
+[![zellij-org/zellij](https://img.shields.io/github/v/tag/zellij-org/zellij?color=BF9B30&display_name=release&label=zellij&sort=semver)](https://github.com/zellij-org/zellij)
+[![helix-editor/helix](https://img.shields.io/github/v/tag/helix-editor/helix?color=A07BDE&display_name=release&label=helix&sort=semver)](https://github.com/helix-editor/helix)
+
+</div>
+
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/) and [mise](https://mise.jdx.dev/).
 
 ## Features
@@ -104,6 +118,50 @@ On first `chezmoi init`, you'll be prompted for:
 - **machine_type** - `work` or `personal`
 
 These values are stored in `~/.config/chezmoi/chezmoi.toml` and used in templates.
+
+## Development
+
+Docker containers are provided for testing dotfiles installation on fresh systems.
+
+### Quick Test
+
+```bash
+# Build and test on Alpine
+./dev/test.sh build
+./dev/test.sh alpine
+
+# Or Ubuntu
+./dev/test.sh ubuntu
+
+# Test both
+./dev/test.sh all
+```
+
+### Interactive Testing
+
+```bash
+# Build images
+docker build -t dotfiles-ubuntu -f dev/Dockerfile.ubuntu .
+docker build -t dotfiles-alpine -f dev/Dockerfile.alpine .
+
+# Run interactive shell
+docker run --rm -it dotfiles-ubuntu
+docker run --rm -it dotfiles-alpine
+
+# Inside container: install and apply dotfiles
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ndisidore
+```
+
+### What's Included
+
+Both containers come pre-installed with:
+- Fish shell (default)
+- Git, curl, bash
+- mise
+- Non-root user with sudo access
+- Build dependencies for compiling runtimes
+
+See `dev/README.md` for more details.
 
 ## License
 

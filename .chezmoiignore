@@ -4,6 +4,7 @@ CLAUDE.md
 LICENSE
 .github/
 renovate.json
+dev/
 
 # OS-specific ignores
 {{ if ne .chezmoi.os "linux" }}

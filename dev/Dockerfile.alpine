@@ -1,0 +1,36 @@
+FROM alpine:3.23
+
+RUN apk add --no-cache \
+    fish \
+    bash \
+    curl \
+    git \
+    sudo \
+    fontconfig \
+    xz \
+    # Required for glibc-based binaries (bun, etc.)
+    gcompat \
+    libstdc++ \
+    # Build dependencies for compiling Python/Node from source
+    build-base \
+    linux-headers \
+    zlib-dev \
+    bzip2-dev \
+    readline-dev \
+    sqlite-dev \
+    openssl-dev \
+    libffi-dev
+
+# Create test user
+RUN adduser -D -s /usr/bin/fish testuser \
+    && echo 'testuser ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/testuser
+
+USER testuser
+WORKDIR /home/testuser
+ENV HOME=/home/testuser
+
+# Install mise
+RUN curl https://mise.run | sh
+ENV PATH="/home/testuser/.local/bin:${PATH}"
+
+ENTRYPOINT ["/usr/bin/fish"]

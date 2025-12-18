@@ -24,17 +24,17 @@ jobs:
 
       - name: Install linters via mise
         run: |
-          mise install shellcheck
-          mise install shfmt
-          mise install taplo
+          mise use -g shellcheck@latest
+          mise use -g taplo@latest
 
       - name: Shellcheck (bash scripts)
         run: |
           shopt -s globstar nullglob
           scripts=(run_*.sh.tmpl)
           if [[ ${#scripts[@]} -gt 0 ]]; then
-            # Extract bash from templates (remove template directives)
             for f in "${scripts[@]}"; do
+              echo "Checking $f"
+              # Extract bash from templates (remove template directives)
               sed '/^#.*{{/d; /{{.*}}/d' "$f" | shellcheck -s bash - || true
             done
           fi
@@ -43,7 +43,7 @@ jobs:
         run: |
           find . -name "*.toml" -type f | while read -r f; do
             echo "Validating $f"
-            taplo format --check "$f" || taplo lint "$f"
+            taplo format --check "$f" || taplo check "$f"
           done
 
   fish-syntax:
@@ -77,7 +77,7 @@ jobs:
         uses: jdx/mise-action@v2
 
       - name: Install chezmoi
-        run: mise install chezmoi
+        run: mise use -g chezmoi@latest
 
       - name: Verify chezmoi templates
         run: |

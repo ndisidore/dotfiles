@@ -79,9 +79,13 @@ jobs:
       - name: Install chezmoi
         run: mise use -g chezmoi@latest
 
-      - name: Verify chezmoi templates
+      - name: Setup chezmoi
         run: |
-          # Create minimal chezmoi config for template testing
+          # Symlink checkout to chezmoi's expected source location
+          mkdir -p ~/.local/share
+          ln -s "$(pwd)" ~/.local/share/chezmoi
+
+          # Create chezmoi config with test data
           mkdir -p ~/.config/chezmoi
           cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
           [data]
@@ -90,9 +94,15 @@ jobs:
             machine_type = "personal"
           EOF
 
-          # Verify chezmoi can parse all templates
-          chezmoi --source="$(pwd)" init --force
-          chezmoi --source="$(pwd)" verify
+      - name: Verify templates render
+        run: |
+          # Test that all .tmpl files render without errors
+          find . -name "*.tmpl" -type f | while read -r f; do
+            echo "Testing template: $f"
+            chezmoi execute-template < "$f" > /dev/null
+          done
 
       - name: Check managed files
-        run: chezmoi --source="$(pwd)" managed
+        run: |
+          chezmoi verify
+          chezmoi managed

@@ -85,14 +85,11 @@ jobs:
           mkdir -p ~/.local/share
           ln -s "$(pwd)" ~/.local/share/chezmoi
 
-          # Create chezmoi config with test data
-          mkdir -p ~/.config/chezmoi
-          cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
-          [data]
-            name = "Test User"
-            email = "test@example.com"
-            machine_type = "personal"
-          EOF
+          # Initialize chezmoi with test data (non-interactive)
+          chezmoi init --force \
+            --promptString name="Test User" \
+            --promptString email="test@example.com" \
+            --promptChoice machine_type=personal
 
       - name: Verify templates render
         run: |

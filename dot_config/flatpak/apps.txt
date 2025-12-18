@@ -1,0 +1,14 @@
+# Flatpak apps to install (one app ID per line)
+# These are installed on all machines
+
+# Communication
+com.discordapp.Discord
+org.telegram.desktop
+
+# Development
+dev.zed.Zed
+
+# Utilities
+io.github.seadve.Kooha
+it.mijorus.gearlever
+org.videolan.VLC

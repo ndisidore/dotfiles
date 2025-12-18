@@ -16,7 +16,7 @@ dev/
 {{- if hasKey . "machine_type" }}
 {{- if eq .machine_type "personal" }}
 # Work-only configs ignored on personal machines
-# .config/work-specific/
+.config/flatpak/apps-work.txt
 {{- end }}
 
 {{- if eq .machine_type "work" }}

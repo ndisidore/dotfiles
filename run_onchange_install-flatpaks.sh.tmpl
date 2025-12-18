@@ -1,0 +1,47 @@
+#!/bin/bash
+# Install flatpak apps
+# Runs when app lists change:
+# apps.txt hash: {{ include "dot_config/flatpak/apps.txt" | sha256sum }}
+# apps-work.txt hash: {{ include "dot_config/flatpak/apps-work.txt" | sha256sum }}
+# machine_type: {{ .machine_type }}
+
+set -euo pipefail
+
+# Check if flatpak is available
+if ! command -v flatpak &> /dev/null; then
+    echo "flatpak not found, skipping flatpak setup"
+    exit 0
+fi
+
+echo "Setting up Flathub..."
+flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+install_from_list() {
+    local list_file="$1"
+    if [[ ! -f "$list_file" ]]; then
+        echo "List file not found: $list_file"
+        return
+    fi
+
+    echo "Installing flatpaks from $list_file..."
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        # Skip comments and empty lines
+        [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+
+        app_id=$(echo "$line" | tr -d '[:space:]')
+        if [[ -n "$app_id" ]]; then
+            echo "  Installing $app_id..."
+            flatpak install --user -y flathub "$app_id" 2>/dev/null || true
+        fi
+    done < "$list_file"
+}
+
+# Install base apps
+install_from_list "${XDG_CONFIG_HOME:-$HOME/.config}/flatpak/apps.txt"
+
+{{ if eq .machine_type "work" -}}
+# Install work-only apps
+install_from_list "${XDG_CONFIG_HOME:-$HOME/.config}/flatpak/apps-work.txt"
+{{ end -}}
+
+echo "Flatpak setup complete!"

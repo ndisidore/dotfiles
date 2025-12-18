@@ -1,0 +1,7 @@
+# Flatpak apps for work machines only
+
+# Communication
+com.slack.Slack
+
+# VPN/Networking
+dev.deedles.Trayscale

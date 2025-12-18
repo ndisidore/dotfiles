@@ -1,0 +1,25 @@
+[general]
+import = [
+  "~/.config/alacritty/catppuccin-mocha.toml"
+]
+
+[font]
+size = 9
+
+[font.normal]
+family = "VictorMono Nerd Font"
+style = "Regular"
+
+[font.bold]
+family = "VictorMono Nerd Font"
+style = "Bold"
+
+[font.italic]
+family = "VictorMono Nerd Font"
+style = "Italic"
+
+[window]
+opacity = 0.9
+
+[mouse]
+hide_when_typing = true

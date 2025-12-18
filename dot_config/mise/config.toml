@@ -1,0 +1,62 @@
+[tools]
+# Language Runtimes (pinned for stability)
+go = "1.23"
+node = "lts"
+bun = "latest"
+python = "3.12"
+
+# Shell & Terminal
+starship = "latest"
+zellij = "latest"
+
+# Editor
+helix = "latest"
+
+# Modern CLI Tools
+eza = "latest"
+fd = "latest"
+ripgrep = "latest"
+bat = "latest"
+delta = "latest"
+fzf = "latest"
+jq = "latest"
+yq = "latest"
+bottom = "latest"
+xh = "latest"
+"aqua:ouch-org/ouch" = "latest"
+
+# Git & VCS
+gh = "latest"
+jj = "latest"
+
+# Databases
+duckdb = "latest"
+
+# CI/CD & DevOps
+dagger = "latest"
+task = "latest"
+"aqua:terrastruct/d2" = "latest"
+
+# Cloud CLIs
+awscli = "latest"
+
+# Build Tools
+buf = "latest"
+
+# Python Tools
+uv = "latest"
+
+# Secrets Management
+doppler = "latest"
+
+# Recording & Docs
+"aqua:asciinema/asciinema" = "latest"
+
+# Chezmoi (self-managing)
+chezmoi = "latest"
+
+# NPM Global Packages
+"npm:@anthropic-ai/claude-code" = "latest"
+
+[settings]
+experimental = true

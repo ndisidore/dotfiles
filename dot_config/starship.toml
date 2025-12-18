@@ -1,0 +1,55 @@
+# Starship Prompt Configuration
+# https://starship.rs/config/
+
+# Timeout for commands (ms)
+command_timeout = 1000
+
+# Format - customize prompt layout
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$golang\
+$nodejs\
+$python\
+$rust\
+$cmd_duration\
+$line_break\
+$character"""
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+format = "[$symbol$branch]($style) "
+symbol = " "
+
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+
+[golang]
+format = "[$symbol($version )]($style)"
+symbol = " "
+
+[nodejs]
+format = "[$symbol($version )]($style)"
+symbol = " "
+
+[python]
+format = "[$symbol($version )]($style)"
+symbol = " "
+
+[rust]
+format = "[$symbol($version )]($style)"
+symbol = " "
+
+[cmd_duration]
+min_time = 2000
+format = "[$duration]($style) "

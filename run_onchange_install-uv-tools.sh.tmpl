@@ -1,0 +1,27 @@
+#!/bin/bash
+# Installs uv tools when config changes
+# Hash: {{ include "dot_config/uv/tools.txt" | sha256sum }}
+
+set -euo pipefail
+
+echo "Installing uv tools..."
+
+# Ensure uv is available (should be installed by mise)
+if ! command -v uv &> /dev/null; then
+    echo "uv not found. Run 'mise install' first."
+    exit 1
+fi
+
+# Read tools.txt and install each tool
+while IFS= read -r line || [[ -n "$line" ]]; do
+    # Skip empty lines and comments
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+
+    # Trim whitespace
+    tool=$(echo "$line" | xargs)
+
+    echo "Installing $tool..."
+    uv tool install "$tool" --force
+done < "${HOME}/.config/uv/tools.txt"
+
+echo "uv tools installed successfully!"

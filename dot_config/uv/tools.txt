@@ -1,0 +1,7 @@
+# UV Tools
+# One tool per line. Lines starting with # are ignored.
+# Format: package-name or package-name==version
+
+copier
+jiratui
+posting

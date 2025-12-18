@@ -1,0 +1,18 @@
+#!/bin/bash
+# Installs mise tools when config changes
+# Hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+set -euo pipefail
+
+echo "Installing mise tools..."
+
+# Check if mise is available
+if ! command -v mise &> /dev/null; then
+    echo "mise not found, installing..."
+    curl https://mise.run | sh
+fi
+
+# Install all tools defined in config
+mise install
+
+echo "mise tools installed successfully!"

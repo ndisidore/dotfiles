@@ -1,0 +1,22 @@
+# Ignore README and other repo files
+README.md
+LICENSE
+
+# OS-specific ignores
+{{ if ne .chezmoi.os "linux" }}
+# Linux-specific configs ignored on non-Linux
+.config/systemd/
+{{ end }}
+
+# Machine-type specific ignores (only apply after chezmoi init)
+{{- if hasKey . "machine_type" }}
+{{- if eq .machine_type "personal" }}
+# Work-only configs ignored on personal machines
+# .config/work-specific/
+{{- end }}
+
+{{- if eq .machine_type "work" }}
+# Personal-only configs ignored on work machines
+# .config/personal-specific/
+{{- end }}
+{{- end }}

@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
+
+      - name: Install linters via mise
+        run: |
+          mise install shellcheck
+          mise install shfmt
+          mise install taplo
+
+      - name: Shellcheck (bash scripts)
+        run: |
+          shopt -s globstar nullglob
+          scripts=(run_*.sh.tmpl)
+          if [[ ${#scripts[@]} -gt 0 ]]; then
+            # Extract bash from templates (remove template directives)
+            for f in "${scripts[@]}"; do
+              sed '/^#.*{{/d; /{{.*}}/d' "$f" | shellcheck -s bash - || true
+            done
+          fi
+
+      - name: Validate TOML files
+        run: |
+          find . -name "*.toml" -type f | while read -r f; do
+            echo "Validating $f"
+            taplo format --check "$f" || taplo lint "$f"
+          done
+
+  fish-syntax:
+    name: Fish Syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Fish
+        run: |
+          sudo apt-add-repository -y ppa:fish-shell/release-3
+          sudo apt-get update
+          sudo apt-get install -y fish
+
+      - name: Check Fish syntax
+        run: |
+          find . -name "*.fish" -type f | while read -r f; do
+            echo "Checking $f"
+            fish -n "$f"
+          done
+
+  chezmoi-verify:
+    name: Chezmoi Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install mise
+        uses: jdx/mise-action@v2
+
+      - name: Install chezmoi
+        run: mise install chezmoi
+
+      - name: Verify chezmoi templates
+        run: |
+          # Create minimal chezmoi config for template testing
+          mkdir -p ~/.config/chezmoi
+          cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
+          [data]
+            name = "Test User"
+            email = "test@example.com"
+            machine_type = "personal"
+          EOF
+
+          # Verify chezmoi can parse all templates
+          chezmoi init --source="$(pwd)" --force
+          chezmoi verify
+
+      - name: Check managed files
+        run: chezmoi managed --source="$(pwd)"

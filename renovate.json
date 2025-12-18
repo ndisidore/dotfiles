@@ -1,0 +1,45 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":semanticCommits",
+    ":dependencyDashboard",
+    ":automergeMinor",
+    ":automergeDigest",
+    "group:linters",
+    "schedule:weekly"
+  ],
+  "labels": ["dependencies"],
+  "automergeStrategy": "squash",
+  "packageRules": [
+    {
+      "description": "GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "labels": ["ci", "dependencies"],
+      "automerge": true
+    },
+    {
+      "description": "Mise tools - automerge non-major",
+      "matchManagers": ["mise"],
+      "labels": ["mise", "dependencies"],
+      "automerge": true,
+      "matchUpdateTypes": ["minor", "patch"]
+    },
+    {
+      "description": "Mise tools - group runtime updates",
+      "matchManagers": ["mise"],
+      "matchPackageNames": ["go", "node", "python", "bun"],
+      "groupName": "language runtimes"
+    },
+    {
+      "description": "Mise tools - group CLI tools",
+      "matchManagers": ["mise"],
+      "excludePackageNames": ["go", "node", "python", "bun"],
+      "groupName": "cli tools"
+    }
+  ],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/.git/**"
+  ]
+}

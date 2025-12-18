@@ -1,6 +1,9 @@
 # Ignore README and other repo files
 README.md
+CLAUDE.md
 LICENSE
+.github/
+renovate.json
 
 # OS-specific ignores
 {{ if ne .chezmoi.os "linux" }}

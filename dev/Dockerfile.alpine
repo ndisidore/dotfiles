@@ -19,7 +19,12 @@ RUN apk add --no-cache \
     readline-dev \
     sqlite-dev \
     openssl-dev \
-    libffi-dev
+    libffi-dev \
+    xz-dev \
+    # Python3 needed for Node.js configure script
+    python3 \
+    # libatomic needed for Node.js
+    libatomic
 
 # Create test user
 RUN adduser -D -s /usr/bin/fish testuser \

@@ -1,6 +1,6 @@
 [tools]
 # Language Runtimes (pinned for stability)
-go = "1.23"
+go = "1.25"
 node = "lts"
 bun = "latest"
 python = "3.12"

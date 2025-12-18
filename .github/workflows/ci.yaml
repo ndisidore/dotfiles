@@ -91,8 +91,8 @@ jobs:
           EOF
 
           # Verify chezmoi can parse all templates
-          chezmoi init --source="$(pwd)" --force
-          chezmoi verify
+          chezmoi --source="$(pwd)" init --force
+          chezmoi --source="$(pwd)" verify
 
       - name: Check managed files
-        run: chezmoi managed --source="$(pwd)"
+        run: chezmoi --source="$(pwd)" managed

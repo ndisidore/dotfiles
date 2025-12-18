@@ -86,10 +86,10 @@ jobs:
           ln -s "$(pwd)" ~/.local/share/chezmoi
 
           # Initialize chezmoi with test data (non-interactive)
+          # --promptString and --promptChoice take comma-separated key=value pairs
           chezmoi init --force \
-            --promptString name="Test User" \
-            --promptString email="test@example.com" \
-            --promptChoice machine_type=personal
+            --promptString 'name=Test User,email=test@example.com' \
+            --promptChoice 'machine_type=personal'
 
       - name: Verify templates render
         run: |

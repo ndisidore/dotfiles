@@ -30,14 +30,28 @@ jobs:
       - name: Shellcheck (bash scripts)
         run: |
           shopt -s globstar nullglob
-          scripts=(run_*.sh.tmpl)
-          if [[ ${#scripts[@]} -gt 0 ]]; then
-            for f in "${scripts[@]}"; do
-              echo "Checking $f"
-              # Extract bash from templates (remove template directives)
-              sed '/^#.*{{/d; /{{.*}}/d' "$f" | shellcheck -s bash - || true
-            done
-          fi
+          failed=0
+
+          # Check plain .sh files
+          for f in **/*.sh; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            shellcheck "$f" || failed=1
+          done
+
+          # Check .sh.tmpl files (replace template syntax with placeholders)
+          for f in **/*.sh.tmpl; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            # Replace template syntax with valid bash placeholders
+            sed -e 's/{{ include "[^"]*" | sha256sum }}/HASH_PLACEHOLDER/' \
+                -e 's/{{ \.machine_type }}/personal/' \
+                -e 's/{{ if eq \.machine_type "work" -}}/# if work machine/' \
+                -e 's/{{ end -}}/# end if/' \
+                "$f" | shellcheck -s bash - || failed=1
+          done
+
+          exit $failed
 
       - name: Validate TOML files
         run: |

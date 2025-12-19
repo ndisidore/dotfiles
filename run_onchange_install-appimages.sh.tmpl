@@ -51,8 +51,9 @@ download_direct() {
 integrate_new() {
     for appimage in "$APPIMAGE_DIR"/*.AppImage "$APPIMAGE_DIR"/*.appimage; do
         [ -f "$appimage" ] || continue
-        local basename=$(basename "$appimage" | sed 's/\.[aA]pp[iI]mage$//')
-        if ! is_installed "$basename"; then
+        local name
+        name=$(basename "$appimage" | sed 's/\.[aA]pp[iI]mage$//')
+        if ! is_installed "$name"; then
             echo "Integrating $appimage..."
             flatpak run it.mijorus.gearlever --integrate "$appimage"
         fi

@@ -1,0 +1,77 @@
+#!/bin/bash
+# Install and integrate AppImages using Gear Lever
+# machine_type: {{ .machine_type }}
+
+set -euo pipefail
+
+APPIMAGE_DIR="${HOME}/AppImages"
+mkdir -p "$APPIMAGE_DIR"
+
+# Check dependencies
+if ! command -v gh &>/dev/null; then
+    echo "gh not found, skipping AppImage setup"
+    exit 0
+fi
+
+if ! flatpak list 2>/dev/null | grep -q "it.mijorus.gearlever"; then
+    echo "Gear Lever not found, skipping AppImage setup"
+    exit 0
+fi
+
+echo "Setting up AppImages..."
+
+# Get list of already-integrated apps
+INSTALLED=$(flatpak run it.mijorus.gearlever --list-installed 2>/dev/null || echo "")
+
+is_installed() {
+    echo "$INSTALLED" | grep -qi "$1"
+}
+
+download_github() {
+    local repo="$1" pattern="$2" name="$3"
+    if is_installed "$name"; then
+        echo "$name already integrated, skipping download"
+        return
+    fi
+    echo "Downloading $name from $repo..."
+    gh release download -R "$repo" --pattern "$pattern" -D "$APPIMAGE_DIR" --clobber
+}
+
+download_direct() {
+    local url="$1" name="$2"
+    if is_installed "$name"; then
+        echo "$name already integrated, skipping download"
+        return
+    fi
+    echo "Downloading $name..."
+    curl -fsSL "$url" -o "$APPIMAGE_DIR/${name}.appimage"
+    chmod +x "$APPIMAGE_DIR/${name}.appimage"
+}
+
+integrate_new() {
+    for appimage in "$APPIMAGE_DIR"/*.AppImage "$APPIMAGE_DIR"/*.appimage; do
+        [ -f "$appimage" ] || continue
+        local basename=$(basename "$appimage" | sed 's/\.[aA]pp[iI]mage$//')
+        if ! is_installed "$basename"; then
+            echo "Integrating $appimage..."
+            flatpak run it.mijorus.gearlever --integrate "$appimage"
+        fi
+    done
+}
+
+# === All machines ===
+# Note: Cursor URL is versioned, check https://cursor.com/download for updates
+download_direct "https://api2.cursor.sh/updates/download/golden/linux-x64/cursor/2.2" "cursor"
+download_github "streamlink/streamlink-appimage" "streamlink+ffmpeg-*x86_64.AppImage" "streamlink"
+download_github "streamlink/streamlink-twitch-gui" "*x86_64.AppImage" "streamlink-twitch-gui"
+
+{{ if eq .machine_type "work" -}}
+# === Work only ===
+download_github "gitbutlerapp/gitbutler" "*amd64.AppImage" "GitButler"
+download_github "httptoolkit/httptoolkit-desktop" "*x64.AppImage" "HttpToolkit"
+{{ end -}}
+
+# Integrate any new AppImages
+integrate_new
+
+echo "AppImage setup complete!"

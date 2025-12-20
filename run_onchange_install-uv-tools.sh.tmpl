@@ -10,13 +10,13 @@ echo "Installing uv tools..."
 export PATH="${HOME}/.local/bin:${PATH}"
 
 # Check if mise is available
-if ! command -v mise &> /dev/null; then
+if ! command -v mise &>/dev/null; then
     echo "mise not found, skipping uv tools installation"
     exit 0
 fi
 
 # Check if uv works via mise exec
-if ! mise exec -- uv --version &> /dev/null; then
+if ! mise exec -- uv --version &>/dev/null; then
     echo "uv not available via mise, skipping uv tools installation"
     exit 0
 fi
@@ -31,6 +31,6 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
     echo "Installing $tool..."
     mise exec -- uv tool install "$tool" --force
-done < "${HOME}/.config/uv/tools.txt"
+done <"${HOME}/.config/uv/tools.txt"
 
 echo "uv tools installed successfully!"

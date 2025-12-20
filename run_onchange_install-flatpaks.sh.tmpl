@@ -8,7 +8,7 @@
 set -euo pipefail
 
 # Check if flatpak is available
-if ! command -v flatpak &> /dev/null; then
+if ! command -v flatpak &>/dev/null; then
     echo "flatpak not found, skipping flatpak setup"
     exit 0
 fi
@@ -33,7 +33,7 @@ install_from_list() {
             echo "  Installing $app_id..."
             flatpak install --user -y flathub "$app_id" 2>/dev/null || true
         fi
-    done < "$list_file"
+    done <"$list_file"
 }
 
 # Install base apps

@@ -18,9 +18,9 @@ test_container() {
 
     if [[ "$use_local" == "true" ]]; then
         # Pipe local repo via tar to avoid permission issues with volume mounts
-        tar -cf - --exclude='.git' . | \
-        docker run --rm -i "${docker_env_args[@]}" \
-            --entrypoint /bin/bash "dotfiles-${distro}" -c '
+        tar -cf - --exclude='.git' . |
+            docker run --rm -i "${docker_env_args[@]}" \
+                --entrypoint /bin/bash "dotfiles-${distro}" -c '
             set -e
             export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
@@ -123,7 +123,7 @@ case "${1:-test}" in
     alpine)
         test_container "alpine"
         ;;
-    all|test)
+    all | test)
         test_container "alpine"
         test_container "ubuntu"
         ;;

@@ -25,6 +25,7 @@ jobs:
       - name: Install linters via mise
         run: |
           mise use -g shellcheck@latest
+          mise use -g shfmt@latest
           mise use -g taplo@latest
 
       - name: Shellcheck (bash scripts)
@@ -49,6 +50,31 @@ jobs:
                 -e 's/{{ if eq \.machine_type "work" -}}/# if work machine/' \
                 -e 's/{{ end -}}/# end if/' \
                 "$f" | shellcheck -s bash - || failed=1
+          done
+
+          exit $failed
+
+      - name: Shell formatting (shfmt)
+        run: |
+          shopt -s globstar nullglob
+          failed=0
+
+          # Check plain .sh files
+          for f in **/*.sh; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            shfmt -d -i 4 -ci "$f" || failed=1
+          done
+
+          # Check .sh.tmpl files (replace template syntax with placeholders)
+          for f in **/*.sh.tmpl; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            sed -e 's/{{ include "[^"]*" | sha256sum }}/HASH_PLACEHOLDER/' \
+                -e 's/{{ \.machine_type }}/personal/' \
+                -e 's/{{ if eq \.machine_type "work" -}}/# if work machine/' \
+                -e 's/{{ end -}}/# end if/' \
+                "$f" | shfmt -d -i 4 -ci || failed=1
           done
 
           exit $failed

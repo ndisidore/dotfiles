@@ -7,7 +7,7 @@ set -euo pipefail
 echo "Installing mise tools..."
 
 # Check if mise is available
-if ! command -v mise &> /dev/null; then
+if ! command -v mise &>/dev/null; then
     echo "mise not found, installing..."
     curl https://mise.run | sh
 fi

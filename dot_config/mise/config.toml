@@ -8,6 +8,7 @@ python = "3.12"
 # Shell & Terminal
 starship = "latest"
 zellij = "latest"
+zoxide = "latest"
 
 # Editor
 helix = "latest"
@@ -23,6 +24,7 @@ jq = "latest"
 yq = "latest"
 bottom = "latest"
 xh = "latest"
+hurl = "latest"
 "aqua:ouch-org/ouch" = "latest"
 
 # Git & VCS
@@ -49,8 +51,9 @@ uv = "latest"
 # Secrets Management
 doppler = "latest"
 
-# Recording & Docs
+# Recording & Media
 "aqua:asciinema/asciinema" = "latest"
+yt-dlp = "latest"
 
 # Chezmoi (self-managing)
 chezmoi = "latest"

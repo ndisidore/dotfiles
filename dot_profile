@@ -1,0 +1,16 @@
+# ~/.profile - Login shell configuration
+
+# Set PATH
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
+# Mise shims for non-interactive shells
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+# Source .bashrc for interactive bash
+if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
+    # shellcheck source=/dev/null
+    . "$HOME/.bashrc"
+fi

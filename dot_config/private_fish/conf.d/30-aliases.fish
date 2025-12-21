@@ -1,5 +1,10 @@
 # Shell Aliases
 
+# Sudo with PATH preserved (for mise tools)
+function sudo
+    command sudo env "PATH=$PATH" $argv
+end
+
 # Modern CLI replacements (if available via mise)
 if command -v eza &> /dev/null
     alias ls='eza'

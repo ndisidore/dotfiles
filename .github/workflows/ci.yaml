@@ -40,6 +40,13 @@ jobs:
             shellcheck "$f" || failed=1
           done
 
+          # Check dot_bashrc and dot_profile (no .sh extension)
+          for f in dot_bashrc dot_profile; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            shellcheck -s bash "$f" || failed=1
+          done
+
           # Check .sh.tmpl files (replace template syntax with placeholders)
           for f in **/*.sh.tmpl; do
             [[ -f "$f" ]] || continue
@@ -61,6 +68,13 @@ jobs:
 
           # Check plain .sh files
           for f in **/*.sh; do
+            [[ -f "$f" ]] || continue
+            echo "Checking $f"
+            shfmt -d -i 4 -ci "$f" || failed=1
+          done
+
+          # Check dot_bashrc and dot_profile (no .sh extension)
+          for f in dot_bashrc dot_profile; do
             [[ -f "$f" ]] || continue
             echo "Checking $f"
             shfmt -d -i 4 -ci "$f" || failed=1

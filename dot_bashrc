@@ -29,7 +29,17 @@ if command -v bat &>/dev/null; then
     alias cat='bat --paging=never'
 fi
 
-# Starship prompt
+# Zoxide - smarter cd
+if command -v zoxide &>/dev/null; then
+    eval "$(zoxide init bash)"
+fi
+
+# FZF - fuzzy finder (Ctrl+R history, Ctrl+T files, Alt+C cd)
+if command -v fzf &>/dev/null; then
+    eval "$(fzf --bash)"
+fi
+
+# Starship prompt (load last so it can see other tools)
 if command -v starship &>/dev/null; then
     eval "$(starship init bash)"
 fi

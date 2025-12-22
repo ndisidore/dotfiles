@@ -1,0 +1,23 @@
+# SSH Configuration
+# Managed by chezmoi
+
+# Default settings for all hosts
+Host *
+    AddKeysToAgent yes
+    IdentitiesOnly yes
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+
+# GitHub - personal
+Host github.com
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_ed25519
+
+{{ if eq .machine_type "work" -}}
+# GitHub - work account
+Host github.com-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/github_work_ed25519
+{{ end -}}

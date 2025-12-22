@@ -25,6 +25,7 @@ yq = "latest"
 bottom = "latest"
 xh = "latest"
 hurl = "latest"
+tlrc = "latest"  # tldr client
 "aqua:ouch-org/ouch" = "latest"
 
 # Git & VCS

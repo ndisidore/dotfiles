@@ -9,9 +9,13 @@ python = "3.14.2"
 starship = "latest"
 zellij = "latest"
 zoxide = "latest"
+atuin = "latest"
 
 # Editor
 helix = "latest"
+
+# System Maintenance
+"aqua:topgrade-rs/topgrade" = "latest"
 
 # Modern CLI Tools
 eza = "latest"
@@ -19,6 +23,8 @@ fd = "latest"
 ripgrep = "latest"
 bat = "latest"
 delta = "latest"
+difftastic = "latest"
+yazi = "latest"
 fzf = "latest"
 jq = "latest"
 yq = "latest"
@@ -42,9 +48,13 @@ task = "latest"
 
 # Cloud CLIs
 awscli = "latest"
+cloudflared = "latest"
 
 # Build Tools
 buf = "latest"
+shfmt = "latest"
+golangci-lint = "latest"
+cue = "latest"
 
 # Python Tools
 uv = "latest"
@@ -54,6 +64,7 @@ doppler = "latest"
 
 # Recording & Media
 "aqua:asciinema/asciinema" = "latest"
+"aqua:asciinema/agg" = "latest"
 yt-dlp = "latest"
 
 # Chezmoi (self-managing)

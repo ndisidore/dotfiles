@@ -3,6 +3,7 @@
 # Runs when app lists change:
 # apps.txt hash: {{ include "dot_config/flatpak/apps.txt" | sha256sum }}
 # apps-work.txt hash: {{ include "dot_config/flatpak/apps-work.txt" | sha256sum }}
+# apps-personal.txt hash: {{ include "dot_config/flatpak/apps-personal.txt" | sha256sum }}
 # machine_type: {{ .machine_type }}
 
 set -euo pipefail
@@ -42,6 +43,9 @@ install_from_list "${XDG_CONFIG_HOME:-$HOME/.config}/flatpak/apps.txt"
 {{ if eq .machine_type "work" -}}
 # Install work-only apps
 install_from_list "${XDG_CONFIG_HOME:-$HOME/.config}/flatpak/apps-work.txt"
+{{ else -}}
+# Install personal-only apps
+install_from_list "${XDG_CONFIG_HOME:-$HOME/.config}/flatpak/apps-personal.txt"
 {{ end -}}
 
 echo "Flatpak setup complete!"

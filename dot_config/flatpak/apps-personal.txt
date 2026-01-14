@@ -1,0 +1,10 @@
+# Flatpak apps for personal machines only
+
+# Utilities
+com.bitwarden.desktop
+
+# Downloads
+org.jdownloader.JDownloader
+
+# Games
+com.github.k4zmu2a.spacecadetpinball

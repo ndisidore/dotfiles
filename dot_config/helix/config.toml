@@ -24,3 +24,12 @@ display-inlay-hints = true
 
 [editor.indent-guides]
 render = true
+
+# Yazi file picker integration (requires Zellij)
+# Ctrl+y y = open in current window
+# Ctrl+y v = open in vertical split
+# Ctrl+y h = open in horizontal split
+[keys.normal.C-y]
+y = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh open %{buffer_name}"
+v = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh vsplit %{buffer_name}"
+h = ":sh zellij run -n Yazi -c -f -x 10%% -y 10%% --width 80%% --height 80%% -- bash ~/.config/helix/yazi-picker.sh hsplit %{buffer_name}"

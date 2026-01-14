@@ -10,5 +10,6 @@ dev.zed.Zed
 
 # Utilities
 io.github.seadve.Kooha
+io.missioncenter.MissionCenter
 it.mijorus.gearlever
 org.videolan.VLC

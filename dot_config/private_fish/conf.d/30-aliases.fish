@@ -21,3 +21,6 @@ end
 function cursor
     nohup ~/Applications/Cursor.AppImage $argv --no-sandbox >/dev/null 2>&1 &
 end
+
+# Zellij session cleanup (removes sessions older than 60 days)
+alias zj-clean='find ~/.cache/zellij/sessions -maxdepth 1 -type d -mtime +60 -exec rm -rf {} \;'

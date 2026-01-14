@@ -20,6 +20,11 @@ style = "Italic"
 
 [window]
 opacity = 0.9
+dynamic_padding = true
+
+[window.padding]
+x = 4
+y = 4
 
 [mouse]
 hide_when_typing = true

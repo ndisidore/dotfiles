@@ -267,3 +267,7 @@ load_plugins {
 theme "catppuccin-macchiato"
 default_mode "normal"
 show_startup_tips false
+
+// Session resurrection - serialize pane viewport and scrollback for better restoration
+pane_viewport_serialization true
+scrollback_lines_to_serialize 1000

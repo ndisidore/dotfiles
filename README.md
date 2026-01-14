@@ -121,45 +121,19 @@ These values are stored in `~/.config/chezmoi/chezmoi.toml` and used in template
 
 ## Development
 
-Docker containers are provided for testing dotfiles installation on fresh systems.
-
-### Quick Test
+A Docker container (Debian trixie-slim) is provided for testing dotfiles installation on a fresh system.
 
 ```bash
-# Build and test on Alpine
-./dev/test.sh build
-./dev/test.sh alpine
-
-# Or Ubuntu
-./dev/test.sh ubuntu
-
-# Test both
+# Build and test
 ./dev/test.sh all
+
+# Or separately
+./dev/test.sh build
+./dev/test.sh test
+
+# Test local uncommitted changes
+USE_LOCAL=true ./dev/test.sh test
 ```
-
-### Interactive Testing
-
-```bash
-# Build images
-docker build -t dotfiles-ubuntu -f dev/Dockerfile.ubuntu .
-docker build -t dotfiles-alpine -f dev/Dockerfile.alpine .
-
-# Run interactive shell
-docker run --rm -it dotfiles-ubuntu
-docker run --rm -it dotfiles-alpine
-
-# Inside container: install and apply dotfiles
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ndisidore
-```
-
-### What's Included
-
-Both containers come pre-installed with:
-- Fish shell (default)
-- Git, curl, bash
-- mise
-- Non-root user with sudo access
-- Build dependencies for compiling runtimes
 
 See `dev/README.md` for more details.
 

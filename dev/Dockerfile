@@ -1,4 +1,4 @@
-FROM ubuntu:questing-20251217@sha256:4a9232cc47bf99defcc8860ef6222c99773330367fcecbf21ba2edb0b810a31e
+FROM debian:trixie-slim
 
 RUN apt-get update -q \
     && apt-get install -qy \
@@ -6,8 +6,6 @@ RUN apt-get update -q \
         bash \
         curl \
         git \
-        gh \
-        flatpak \
         sudo \
         locales \
         fontconfig \
@@ -18,7 +16,7 @@ RUN apt-get update -q \
     && rm -rf /tmp/*
 
 # Set up locale
-RUN locale-gen en_US.UTF-8
+RUN sed -i '/en_US.UTF-8/s/^# //' /etc/locale.gen && locale-gen
 ENV LANG=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 

@@ -1,8 +1,9 @@
 #!/bin/bash
-# Test dotfiles installation in Docker containers
+# Test dotfiles installation in Docker container
 set -euo pipefail
 
 GITHUB_USER="${GITHUB_USER:-ndisidore}"
+IMAGE_NAME="dotfiles-test"
 
 # Build docker run args, including GITHUB_TOKEN if available
 docker_env_args=()
@@ -11,16 +12,20 @@ if [[ -n "${GITHUB_TOKEN:-}" ]]; then
     docker_env_args+=(-e "MISE_GITHUB_TOKEN=${GITHUB_TOKEN}")
 fi
 
+build_image() {
+    echo "Building Docker image..."
+    docker build -t "$IMAGE_NAME" -f dev/Dockerfile .
+}
+
 test_container() {
-    local distro="$1"
     local use_local="${USE_LOCAL:-false}"
-    echo "=== Testing on ${distro} ==="
+    echo "=== Testing dotfiles ==="
 
     if [[ "$use_local" == "true" ]]; then
         # Pipe local repo via tar to avoid permission issues with volume mounts
         tar -cf - --exclude='.git' . |
             docker run --rm -i "${docker_env_args[@]}" \
-                --entrypoint /bin/bash "dotfiles-${distro}" -c '
+                --entrypoint /bin/bash "$IMAGE_NAME" -c '
             set -e
             export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
@@ -63,7 +68,7 @@ EOF
             echo "✓ Test passed!"
         '
     else
-        docker run --rm "${docker_env_args[@]}" --entrypoint /bin/bash "dotfiles-${distro}" -c '
+        docker run --rm "${docker_env_args[@]}" --entrypoint /bin/bash "$IMAGE_NAME" -c '
             set -e
             export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 
@@ -103,32 +108,27 @@ EOF
             echo "✓ Test passed!"
         '
     fi
-    echo "=== ${distro} complete ==="
-}
-
-# Build images if needed
-build_images() {
-    echo "Building Docker images..."
-    docker build -t dotfiles-ubuntu -f dev/Dockerfile.ubuntu .
-    docker build -t dotfiles-alpine -f dev/Dockerfile.alpine .
+    echo "=== Test complete ==="
 }
 
 case "${1:-test}" in
     build)
-        build_images
+        build_image
         ;;
-    ubuntu)
-        test_container "ubuntu"
+    test)
+        test_container
         ;;
-    alpine)
-        test_container "alpine"
-        ;;
-    all | test)
-        test_container "alpine"
-        test_container "ubuntu"
+    all)
+        build_image
+        test_container
         ;;
     *)
-        echo "Usage: $0 {build|ubuntu|alpine|all}"
+        echo "Usage: $0 {build|test|all}"
+        echo ""
+        echo "Environment variables:"
+        echo "  GITHUB_TOKEN  - GitHub token to avoid rate limiting"
+        echo "  USE_LOCAL     - Test local changes instead of cloning (USE_LOCAL=true)"
+        echo "  GITHUB_USER   - GitHub user to clone from (default: ndisidore)"
         exit 1
         ;;
 esac

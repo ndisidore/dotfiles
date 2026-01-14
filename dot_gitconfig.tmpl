@@ -44,3 +44,22 @@
 [diff]
 	colorMoved = default
 {{ end }}
+
+{{ if lookPath "difft" }}
+[diff]
+	tool = difftastic
+
+[difftool]
+	prompt = false
+
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+	difftool = true
+
+[alias]
+	dft = difftool
+	dfl = -c diff.external=difft log -p --ext-diff
+	dfs = -c diff.external=difft show --ext-diff
+{{ end }}

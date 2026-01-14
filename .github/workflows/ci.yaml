@@ -55,6 +55,7 @@ jobs:
             sed -e 's/{{ include "[^"]*" | sha256sum }}/HASH_PLACEHOLDER/' \
                 -e 's/{{ \.machine_type }}/personal/' \
                 -e 's/{{ if eq \.machine_type "work" -}}/# if work machine/' \
+                -e 's/{{ else -}}/# else/' \
                 -e 's/{{ end -}}/# end if/' \
                 "$f" | shellcheck -s bash - || failed=1
           done
@@ -87,6 +88,7 @@ jobs:
             sed -e 's/{{ include "[^"]*" | sha256sum }}/HASH_PLACEHOLDER/' \
                 -e 's/{{ \.machine_type }}/personal/' \
                 -e 's/{{ if eq \.machine_type "work" -}}/# if work machine/' \
+                -e 's/{{ else -}}/# else/' \
                 -e 's/{{ end -}}/# end if/' \
                 "$f" | shfmt -d -i 4 -ci || failed=1
           done

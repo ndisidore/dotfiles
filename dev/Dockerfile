@@ -6,6 +6,8 @@ RUN apt-get update -q \
         bash \
         curl \
         git \
+        gh \
+        flatpak \
         sudo \
         locales \
         fontconfig \

@@ -4,4 +4,3 @@
 
 copier
 jiratui
-posting

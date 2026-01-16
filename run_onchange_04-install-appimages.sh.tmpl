@@ -63,8 +63,6 @@ integrate_new() {
 # === All machines ===
 # Note: Cursor URL is versioned, check https://cursor.com/download for updates
 download_direct "https://api2.cursor.sh/updates/download/golden/linux-x64/cursor/2.2" "cursor"
-download_github "streamlink/streamlink-appimage" "streamlink+ffmpeg-*x86_64.AppImage" "streamlink"
-download_github "streamlink/streamlink-twitch-gui" "*x86_64.AppImage" "streamlink-twitch-gui"
 
 {{ if eq .machine_type "work" -}}
 # === Work only ===

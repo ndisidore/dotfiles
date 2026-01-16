@@ -24,7 +24,7 @@ test_container() {
     if [[ "$use_local" == "true" ]]; then
         # Pipe local repo via tar to avoid permission issues with volume mounts
         tar -cf - --exclude='.git' . |
-            docker run --rm -i "${docker_env_args[@]}" \
+            docker run --rm -i --privileged "${docker_env_args[@]}" \
                 --entrypoint /bin/bash "$IMAGE_NAME" -c '
             set -e
             export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
@@ -68,7 +68,7 @@ EOF
             echo "✓ Test passed!"
         '
     else
-        docker run --rm "${docker_env_args[@]}" --entrypoint /bin/bash "$IMAGE_NAME" -c '
+        docker run --rm --privileged "${docker_env_args[@]}" --entrypoint /bin/bash "$IMAGE_NAME" -c '
             set -e
             export PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 

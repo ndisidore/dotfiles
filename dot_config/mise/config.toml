@@ -1,9 +1,9 @@
 [tools]
 # Language Runtimes (pinned for stability)
-go = "1.26.1"
+go = "1.26.2"
 node = "lts"
 bun = "latest"
-python = "3.14.3"
+python = "3.14.4"
 
 # Shell & Terminal
 starship = "latest"

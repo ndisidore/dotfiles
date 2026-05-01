@@ -1,0 +1,16 @@
+theme = Catppuccin Mocha
+
+font-family = VictorMono Nerd Font
+font-style = Regular
+font-style-bold = Bold
+font-style-italic = Italic
+font-size = 9
+
+background-opacity = 0.9
+window-padding-x = 4
+window-padding-y = 4
+window-padding-balance = true
+
+mouse-hide-while-typing = true
+
+keybind = shift+enter=text:\x1b\r

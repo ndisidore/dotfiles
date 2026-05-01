@@ -110,7 +110,6 @@ format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 
 [zig]
 symbol = ""
-symbol = ""
 style = "bg:green"
 format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
 
@@ -150,7 +149,7 @@ vimcmd_visual_symbol = '[❮](bold fg:yellow)'
 
 [cmd_duration]
 show_milliseconds = true
-format = " in $duration "
+format = " in $duration "
 style = "bg:lavender"
 disabled = false
 show_notifications = true

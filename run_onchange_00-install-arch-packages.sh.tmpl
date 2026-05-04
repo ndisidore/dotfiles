@@ -1,0 +1,36 @@
+#!/bin/bash
+# Installs Arch packages (native repos + AUR) on Arch-based hosts.
+# No-op on non-Arch distros.
+
+set -euo pipefail
+
+{{ if .is_arch -}}
+PACKAGES=(
+    alacritty
+    ghostty
+    zellij
+    helix
+    topgrade
+    github-cli
+    jujutsu
+    starship
+    chezmoi
+    duckdb
+    ttf-victor-mono-nerd
+)
+
+if command -v paru >/dev/null 2>&1; then
+    HELPER=paru
+elif command -v yay >/dev/null 2>&1; then
+    HELPER=yay
+else
+    echo "No AUR helper (paru/yay) found; install one and re-run." >&2
+    exit 1
+fi
+
+echo "Installing Arch packages via ${HELPER}..."
+"$HELPER" -S --needed --noconfirm "${PACKAGES[@]}"
+echo "Arch packages installed."
+{{- else -}}
+echo "Not an Arch-based system; skipping pacman install."
+{{- end }}

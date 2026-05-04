@@ -2,10 +2,23 @@
 {{- $email := promptStringOnce . "email" "Email address" -}}
 {{- $machine_type := promptChoiceOnce . "machine_type" "Machine type" (list "personal" "work") -}}
 
+{{- $isArch := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- $id := .chezmoi.osRelease.id -}}
+  {{- $idLike := "" -}}
+  {{- if hasKey .chezmoi.osRelease "idLike" -}}
+    {{- $idLike = .chezmoi.osRelease.idLike -}}
+  {{- end -}}
+  {{- if or (eq $id "arch") (regexMatch "(^| )arch( |$)" $idLike) -}}
+    {{- $isArch = true -}}
+  {{- end -}}
+{{- end -}}
+
 [data]
     name = {{ $name | quote }}
     email = {{ $email | quote }}
     machine_type = {{ $machine_type | quote }}
+    is_arch = {{ $isArch }}
 
 [bitwarden]
     command = "bw"

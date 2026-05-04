@@ -6,16 +6,20 @@ bun = "latest"
 python = "3.14.4"
 
 # Shell & Terminal
+{{- if not .is_arch }}
 starship = "latest"
 zellij = "latest"
+{{- end }}
 zoxide = "latest"
-atuin = "latest"
+
+{{- if not .is_arch }}
 
 # Editor
 helix = "latest"
 
 # System Maintenance
 "aqua:topgrade-rs/topgrade" = "latest"
+{{- end }}
 
 # Modern CLI Tools
 watchexec = "latest"
@@ -37,12 +41,15 @@ tlrc = "latest"  # tldr client
 glow = "latest"
 "aqua:ouch-org/ouch" = "latest"
 
+{{- if not .is_arch }}
+
 # Git & VCS
 gh = "latest"
 jj = "latest"
 
 # Databases
 duckdb = "latest"
+{{- end }}
 
 # CI/CD & DevOps
 dagger = "latest"
@@ -70,8 +77,11 @@ doppler = "latest"
 "aqua:asciinema/agg" = "latest"
 yt-dlp = "latest"
 
+{{- if not .is_arch }}
+
 # Chezmoi (self-managing)
 chezmoi = "latest"
+{{- end }}
 
 # NPM Global Packages
 "npm:@anthropic-ai/claude-code" = "latest"

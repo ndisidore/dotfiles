@@ -4,6 +4,9 @@
 # Local bins
 fish_add_path $HOME/.local/bin
 
+# Atuin (installed via setup.atuin.sh on non-Arch hosts)
+fish_add_path $HOME/.atuin/bin
+
 # Rust/Cargo
 fish_add_path $HOME/.cargo/bin
 

@@ -1,8 +1,14 @@
 #!/bin/bash
-# Installs Nerd Fonts (runs once on first chezmoi apply)
+# Installs Nerd Fonts (runs once on first chezmoi apply).
+# On Arch-based systems, the font is installed from the repos
+# (ttf-victor-mono-nerd) by the arch-packages script instead.
 
 set -euo pipefail
 
+{{ if .is_arch -}}
+echo "Arch-based system; nerd font handled by pacman (ttf-victor-mono-nerd)."
+exit 0
+{{- else -}}
 FONT_DIR="${HOME}/.local/share/fonts"
 mkdir -p "${FONT_DIR}"
 
@@ -24,3 +30,4 @@ fi
 fc-cache -f
 
 echo "Nerd Fonts installation complete!"
+{{- end }}
